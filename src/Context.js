@@ -4,9 +4,12 @@ const Context = React.createContext();
 
 const Provider = (props) => {
   const [photos, setPhotos] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
+
+  console.log(cartItems);
 
   const toggleFavorite = (id) => {
-    const changedPhotos = photos.map((photo) => {
+    const changedPhotosArray = photos.map((photo) => {
       if (photo.id === id)
         return {
           ...photo,
@@ -15,7 +18,18 @@ const Provider = (props) => {
       return photo;
     });
 
-    setPhotos(changedPhotos);
+    setPhotos(changedPhotosArray);
+  };
+
+  const addToCart = (photoToAdd) => {
+    if (!cartItems.find((photo) => photo.id === photoToAdd.id))
+      setCartItems((prevArray) => [...prevArray, photoToAdd]);
+  };
+
+  const removeFromCart = (id) => {
+    const changedCartPhotos = cartItems.filter((photo) => !(photo.id === id));
+    console.log("changedCartPhotos:", changedCartPhotos);
+    setCartItems(changedCartPhotos);
   };
 
   useEffect(() => {
@@ -26,10 +40,10 @@ const Provider = (props) => {
       .then((data) => setPhotos(data));
   }, []);
 
-  console.log(photos);
-
   return (
-    <Context.Provider value={{ photos, toggleFavorite }}>
+    <Context.Provider
+      value={{ photos, toggleFavorite, addToCart, removeFromCart, cartItems }}
+    >
       {props.children}
     </Context.Provider>
   );
