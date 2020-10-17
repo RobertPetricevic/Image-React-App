@@ -6,8 +6,6 @@ const Provider = (props) => {
   const [photos, setPhotos] = useState([]);
   const [cartItems, setCartItems] = useState([]);
 
-  console.log(cartItems);
-
   const toggleFavorite = (id) => {
     const changedPhotosArray = photos.map((photo) => {
       if (photo.id === id)
@@ -32,6 +30,10 @@ const Provider = (props) => {
     setCartItems(changedCartPhotos);
   };
 
+  function emptyCart() {
+    setCartItems([]);
+  }
+
   useEffect(() => {
     fetch(
       "https://raw.githubusercontent.com/bobziroll/scrimba-react-bootcamp-images/master/images.json"
@@ -42,7 +44,14 @@ const Provider = (props) => {
 
   return (
     <Context.Provider
-      value={{ photos, toggleFavorite, addToCart, removeFromCart, cartItems }}
+      value={{
+        photos,
+        toggleFavorite,
+        addToCart,
+        removeFromCart,
+        cartItems,
+        emptyCart,
+      }}
     >
       {props.children}
     </Context.Provider>
