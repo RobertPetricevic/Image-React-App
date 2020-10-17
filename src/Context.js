@@ -1,22 +1,23 @@
-import React, {useState,useEffect} from "react"
+import React, { useState, useEffect } from "react";
 
-const Context = React.createContext()
+const Context = React.createContext();
 
 const Provider = (props) => {
+  const [photos, setPhotos] = useState([]);
 
-    const [photos, setPhotos] = useState([])
-
-    useEffect(() => {
-        fetch("https://raw.githubusercontent.com/bobziroll/scrimba-react-bootcamp-images/master/images.json").then(res=>res.json()).then(data=>setPhotos(data))
-    }, [])
-
-    console.log(photos)
-
-    return (
-        <Context.Provider value={""}>
-            {props.children}
-        </Context.Provider>
+  useEffect(() => {
+    fetch(
+      "https://raw.githubusercontent.com/bobziroll/scrimba-react-bootcamp-images/master/images.json"
     )
-}
+      .then((res) => res.json())
+      .then((data) => setPhotos(data));
+  }, []);
 
-export {Provider,Context}
+  console.log(photos);
+
+  return (
+    <Context.Provider value={{ photos }}>{props.children}</Context.Provider>
+  );
+};
+
+export { Provider, Context };
